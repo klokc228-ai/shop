@@ -1,0 +1,182 @@
+{% extends 'main/base.html' %}
+{% block title %}Корзина — StylishShop{% endblock %}
+
+{% block extra_head %}
+<style>
+  .cart-container {
+    max-width: 900px;
+    margin: 60px auto;
+    background: var(--card);
+    border-radius: var(--radius);
+    padding: 24px;
+    box-shadow: var(--shadow);
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+
+  th, td {
+    padding: 14px;
+    border-bottom: 1px solid var(--line);
+    text-align: left;
+    vertical-align: middle;
+  }
+
+  th {
+    color: var(--muted);
+    font-weight: 500;
+  }
+
+  .cart-img {
+    width: 60px;
+    height: 60px;
+    border-radius: 10px;
+    object-fit: cover;
+    margin-right: 10px;
+    cursor: zoom-in;
+    transition: transform 0.3s ease;
+  }
+
+  .cart-img:hover {
+    transform: scale(1.05);
+  }
+
+  .product-cell {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    position: relative;
+  }
+
+  td button {
+    background: none;
+    border: none;
+    color: #7c8cff;
+    font-size: 18px;
+    cursor: pointer;
+    transition: 0.2s;
+  }
+
+  td button:hover {
+    color: #aeb8ff;
+  }
+
+  .total {
+    text-align: right;
+    font-size: 20px;
+    font-weight: 700;
+    margin-top: 20px;
+  }
+
+  .checkout {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 30px;
+  }
+
+  .checkout-btn {
+    padding: 14px 28px;
+    border: none;
+    border-radius: 14px;
+    background: var(--accent);
+    color: #0c0f14;
+    font-weight: 700;
+    font-size: 16px;
+    cursor: pointer;
+    transition: transform 0.2s, opacity 0.2s;
+  }
+
+  .checkout-btn:hover {
+    transform: translateY(-2px);
+    opacity: 0.9;
+  }
+
+  .empty {
+    text-align: center;
+    color: var(--muted);
+    padding: 40px 0;
+  }
+
+  .remove-btn {
+    color: #ff7c7c;
+  }
+
+  .remove-btn:hover {
+    color: #ffaaaa;
+  }
+</style>
+{% endblock %}
+
+{% block content %}
+<h1>Корзина</h1>
+
+<div class="cart-container">
+  {% if cart_items %}
+    <table id="cartTable">
+      <tr>
+        <th>Товар</th>
+        <th>Кол-во</th>
+        <th>Цена</th>
+        <th>Итого</th>
+        <th></th>
+      </tr>
+      {% for item in cart_items %}
+        <tr data-id="{{ item.id }}">
+          <td class="product-cell">
+            <img src="{{ item.product.photo.url }}" alt="{{ item.product.name }}" class="cart-img">
+            {{ item.product.name }}
+          </td>
+          <td>
+            <button onclick="updateQuantity('{{ item.id }}', 'decrease')">−</button>
+            <span id="qty-{{ item.id }}">{{ item.quantity }}</span>
+            <button onclick="updateQuantity('{{ item.id }}', 'increase')">+</button>
+          </td>
+          <td>{{ item.product.price }} ₴</td>
+          <td id="total-{{ item.id }}">{{ item.total_price }} ₴</td>
+          <td><button class="remove-btn" onclick="removeItem('{{ item.id }}')">❌</button></td>
+        </tr>
+      {% endfor %}
+    </table>
+
+    <div class="total" id="totalSum">Всего: {{ total_price }} ₴</div>
+
+
+    <div class="checkout">
+      <a href="{% url 'checkout' %}">
+        <button class="checkout-btn">Оформить заказ</button>
+      </a>
+    </div>
+
+  {% else %}
+    <div class="empty">Корзина пуста 😢</div>
+  {% endif %}
+</div>
+
+<script>
+  async function updateQuantity(id, action) {
+    const res = await fetch(`/cart/update/${id}/${action}/`);
+    const data = await res.json();
+
+    if (data.success) {
+      document.getElementById(`qty-${id}`).textContent = data.quantity;
+      document.getElementById(`total-${id}`).textContent = data.item_total + ' ₴';
+      document.getElementById('totalSum').textContent = 'Всего: ' + data.total + ' ₴';
+    }
+  }
+
+  async function removeItem(id) {
+    const res = await fetch(`/cart/remove/${id}/`);
+    const data = await res.json();
+
+    if (data.success) {
+      document.querySelector(`tr[data-id="${id}"]`).remove();
+      document.getElementById('totalSum').textContent = 'Всего: ' + data.total + ' ₴';
+      if (data.total == 0) {
+        document.querySelector('.cart-container').innerHTML = '<div class="empty">Корзина пуста 😢</div>';
+      }
+    }
+  }
+</script>
+{% endblock %}

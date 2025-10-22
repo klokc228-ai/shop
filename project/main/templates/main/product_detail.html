@@ -1,0 +1,106 @@
+{% extends 'main/base.html' %}
+{% load static %}
+
+{% block title %}{{ product.name }} — StylishShop{% endblock %}
+
+{% block extra_head %}
+<style>
+.btn-add {
+  display: inline-block;
+  margin-top: 16px;
+  background: linear-gradient(90deg, #2bd2ff, #8a7dff);
+  color: #fff;
+  padding: 12px 24px;
+  border-radius: 10px;
+  font-weight: 600;
+  text-decoration: none;
+  transition: 0.3s ease;
+}
+.btn-add:hover {
+  opacity: 0.85;
+  transform: translateY(-2px);
+}
+</style>
+
+
+<style>
+  .product-page {
+    max-width: 1000px;
+    margin: 60px auto;
+    padding: 0 20px;
+    display: flex;
+    gap: 40px;
+    align-items: flex-start;
+  }
+
+  .product-page img {
+    width: 420px;
+    border-radius: 16px;
+    box-shadow: 0 8px 24px rgba(0,0,0,.4);
+  }
+
+  .info {
+    flex: 1;
+  }
+
+  .info h1 {
+    font-size: 32px;
+    margin-bottom: 10px;
+    background: var(--accent);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  .price {
+    font-size: 26px;
+    font-weight: 700;
+    margin: 20px 0;
+  }
+
+  .desc {
+    color: var(--muted);
+    line-height: 1.6;
+  }
+
+  .btn {
+    padding: 12px 18px;
+    border-radius: 12px;
+    border: none;
+    background: var(--accent);
+    color: #0c0f14;
+    font-weight: 700;
+    cursor: pointer;
+    transition: opacity .3s;
+  }
+
+  .btn:hover {
+    opacity: 0.85;
+  }
+
+  @media (max-width: 768px) {
+    .product-page {
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .product-page img {
+      width: 100%;
+      max-width: 360px;
+    }
+  }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="product-page">
+  <img src="{{ product.photo.url }}" alt="{{ product.name }}">
+  <div class="info">
+    <h1>{{ product.name }}</h1>
+    <div class="price">{{ product.price }} ₴</div>
+    <p class="desc">{{ product.description }}</p>
+    <a href="{% url 'add_to_cart' product.slug %}" class="btn-add">
+      Добавить в корзину
+    </a>
+  </div>
+</div>
+{% endblock %}

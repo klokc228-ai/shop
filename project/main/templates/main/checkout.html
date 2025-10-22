@@ -1,0 +1,79 @@
+{% extends 'main/base.html' %}
+{% block title %}Оформление заказа — StylishShop{% endblock %}
+
+{% block extra_head %}
+<style>
+  .checkout-container {
+    max-width: 600px;
+    margin: 60px auto;
+    background: var(--card);
+    border-radius: var(--radius);
+    padding: 30px;
+    box-shadow: var(--shadow);
+  }
+
+  h1 {
+    text-align: center;
+    margin-bottom: 30px;
+  }
+
+  .form-control {
+    width: 100%;
+    padding: 12px 14px;
+    margin-bottom: 18px;
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    background: #0e1117;
+    color: var(--text);
+    font-size: 15px;
+  }
+
+  textarea.form-control {
+    resize: none;
+  }
+
+  .form-control:focus {
+    outline: none;
+    border-color: #7c8cff;
+  }
+
+  .checkout-btn {
+    width: 100%;
+    padding: 14px;
+    border-radius: 12px;
+    border: none;
+    background: var(--accent);
+    color: #0c0f14;
+    font-weight: 700;
+    font-size: 16px;
+    cursor: pointer;
+    transition: transform 0.2s, opacity 0.2s;
+  }
+
+  .checkout-btn:hover {
+    transform: translateY(-2px);
+    opacity: 0.9;
+  }
+
+  .total {
+    text-align: right;
+    font-size: 18px;
+    font-weight: 700;
+    margin-bottom: 20px;
+  }
+</style>
+{% endblock %}
+
+{% block content %}
+<h1>Оформление заказа</h1>
+
+<div class="checkout-container">
+  <div class="total">Всего к оплате: {{ total_price }} ₴</div>
+
+  <form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit" class="checkout-btn">Подтвердить заказ</button>
+  </form>
+</div>
+{% endblock %}

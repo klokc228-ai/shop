@@ -1,0 +1,72 @@
+{% extends 'main/base.html' %}
+{% block title %}Заказ успешно оформлен — StylishShop{% endblock %}
+
+{% block extra_head %}
+<style>
+  .success-container {
+    max-width: 700px;
+    margin: 100px auto;
+    text-align: center;
+    background: var(--card);
+    border-radius: var(--radius);
+    padding: 50px 40px;
+    box-shadow: var(--shadow);
+  }
+
+  .success-icon {
+    font-size: 64px;
+    color: #2bd2ff;
+    margin-bottom: 20px;
+  }
+
+  h1 {
+    font-size: 32px;
+    margin-bottom: 10px;
+    background: var(--accent);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  p {
+    color: var(--muted);
+    font-size: 16px;
+    margin-bottom: 30px;
+  }
+
+  .order-id {
+    color: #8a7dff;
+    font-weight: 600;
+  }
+
+  .btn-home {
+    display: inline-block;
+    padding: 14px 28px;
+    background: var(--accent);
+    color: #0c0f14;
+    font-weight: 700;
+    border-radius: 12px;
+    text-decoration: none;
+    transition: transform 0.2s ease, opacity 0.3s ease;
+  }
+
+  .btn-home:hover {
+    transform: translateY(-3px);
+    opacity: 0.9;
+  }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="success-container">
+  <div class="success-icon">✅</div>
+  <h1>Заказ успешно оформлен!</h1>
+  <p>Спасибо, <strong>{{ order.name }}</strong>!  
+  Мы скоро свяжемся с вами для подтверждения заказа.</p>
+
+  <p>Номер вашего заказа: <span class="order-id">#{{ order.id }}</span></p>
+
+  <p style="margin-top: 30px;">Общая сумма: <strong>{{ order.total_price }} ₴</strong></p>
+
+  <a href="{% url 'shop' %}" class="btn-home">Вернуться в магазин</a>
+</div>
+{% endblock %}

@@ -1,0 +1,266 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{% block title %}StylishShop{% endblock %}</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --bg: #0f1115;
+      --text: #e7ecf3;
+      --muted: #9aa4b2;
+      --accent: linear-gradient(90deg,#2bd2ff,#8a7dff);
+      --card: #141822;
+      --line: rgba(255,255,255,.08);
+      --radius: 16px;
+      --shadow: 0 8px 24px rgba(0,0,0,.4);
+    }
+
+    html { scrollbar-gutter: stable; }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      animation: fadeIn 0.7s ease;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(-10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+
+    .alert-container {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      z-index: 1000;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .alert {
+      padding: 12px 18px;
+      border-radius: 12px;
+      color: #fff;
+      font-weight: 600;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.4);
+      animation: slideIn 0.4s ease, fadeOut 0.4s ease 2.8s forwards;
+      backdrop-filter: blur(6px);
+      font-size: 0.95rem;
+    }
+
+
+    .alert.success { background: linear-gradient(90deg, #2bd2ff, #8a7dff); }
+    .alert.error { background: rgba(255, 70, 70, 0.9); }
+    .alert.info { background: rgba(255, 255, 255, 0.15); }
+
+
+    @keyframes slideIn {
+      from { opacity: 0; transform: translateY(-10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes fadeOut {
+      to { opacity: 0; transform: translateY(-10px); }
+    }
+
+
+
+
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      backdrop-filter: blur(10px);
+      background: rgba(10,12,16,0.7);
+      border-bottom: 1px solid var(--line);
+    }
+
+
+    .nav-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 16px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 22px;
+      font-weight: 700;
+      background: var(--accent);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      text-decoration: none;
+    }
+
+    .logo img {
+      width: 28px;
+      height: 28px;
+      filter: drop-shadow(0 0 4px rgba(139, 126, 255, 0.4));
+    }
+
+    nav {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      flex-grow: 1;
+      justify-content: center;
+    }
+
+    nav a {
+      color: var(--text);
+      text-decoration: none;
+      font-weight: 500;
+      transition: all 0.3s ease;
+    }
+
+    nav a:hover { color: #7c8cff; }
+
+
+    .auth-group {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      margin-left: auto; 
+    }
+
+    .auth-btn {
+      padding: 8px 16px;
+      border-radius: 10px;
+      background: rgba(255, 255, 255, 0.07);
+      color: var(--text);
+      transition: all 0.25s ease;
+      font-weight: 600;
+      border: 1px solid rgba(255,255,255,0.1);
+    }
+
+    .auth-btn:hover {
+      background: rgba(255, 255, 255, 0.2);
+      color: #fff;
+      box-shadow: 0 0 10px rgba(255, 255, 255, 0.15);
+      transform: translateY(-1px);
+    }
+
+    .cart-icon {
+      position: relative;
+      width: 26px;
+      height: 26px;
+      background: url('{% static "icons/cart.svg" %}') center/cover no-repeat;
+      cursor: pointer;
+      margin-left: 4px; 
+      transition: transform 0.3s ease, filter 0.3s ease;
+    }
+
+    .cart-icon:hover {
+      transform: scale(1.05);
+      filter: drop-shadow(0 0 6px rgba(138, 125, 255, 0.6));
+    }
+
+
+    footer {
+      margin-top: 60px;
+      padding: 20px;
+      text-align: center;
+      color: var(--muted);
+      border-top: 1px solid var(--line);
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 60px auto;
+      padding: 0 20px;
+    }
+
+
+    .floating-privacy {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background: linear-gradient(90deg,#2bd2ff,#8a7dff);
+      color: white;
+      padding: 10px 16px;
+      border-radius: 12px;
+      font-weight: 600;
+      text-decoration: none;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+      transition: all 0.3s ease;
+    }
+
+    .floating-privacy:hover {
+      transform: translateY(-2px);
+      opacity: 0.9;
+    }
+  </style>
+
+  {% block extra_head %}{% endblock %}
+</head>
+
+<script>
+  setTimeout(() => {
+    document.querySelectorAll('.alert').forEach(el => el.style.display = 'none');
+  }, 3000);
+</script>
+
+
+<body>
+  <header>
+    <div class="nav-container">
+      <a href="/" class="logo">
+        <img src="{% static 'icons/shop-bag.svg' %}" alt="StylishShop Logo">
+        StylishShop
+      </a>
+
+      <nav>
+        <a href="/">Главная</a>
+        <a href="/shop/">Магазин</a>
+        <a href="/leave-review/">Оставить отзыв</a>
+        <a href="/reviews/">Отзывы</a>
+        <a href="/about/">О нас</a>
+      </nav>
+
+      <div class="auth-group">
+        {% if request.user.is_authenticated %}
+          <span style="color:#9aa4b2; margin-right:6px;">Привет, {{ request.user.username }}</span>
+          <a href="{% url 'logout' %}" class="auth-btn">Выйти</a>
+        {% else %}
+          <a href="{% url 'login' %}" class="auth-btn">Войти</a>
+          <a href="{% url 'register' %}" class="auth-btn">Регистрация</a>
+        {% endif %}
+        <a href="{% url 'cart' %}" class="cart-icon"></a>
+      </div>
+    </div>
+  </header>
+
+   {% if messages %}
+      <div class="alert-container">
+        {% for message in messages %}
+          <div class="alert {{ message.tags }}">{{ message }}</div>
+        {% endfor %}
+      </div>
+    {% endif %}
+
+  <main class="container">
+    {% block content %}{% endblock %}
+  </main>
+
+  <footer>
+    © 2025 StylishShop — создаём стиль и технологии вместе с вами.
+  </footer>
+
+  <a href="{% url 'privacy' %}" class="floating-privacy">🔒 Политика</a>
+</body>
+</html>

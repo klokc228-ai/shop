@@ -68,7 +68,25 @@
   .product-price {
     font-weight: 700;
     font-size: 18px;
-    margin-bottom: 10px;
+    margin-bottom: 6px;
+  }
+
+  /* ⭐ блок рейтинга */
+  .rating {
+    color: #ffd700;
+    font-size: 16px;
+    margin-bottom: 8px;
+    text-shadow: 0 0 8px rgba(255,215,0,0.4);
+  }
+
+  .rating span.empty {
+    opacity: 0.25;
+  }
+
+  .rating small {
+    color: #999;
+    font-size: 13px;
+    display: block;
   }
 
   .btn {
@@ -106,6 +124,21 @@
         </h3>
         <p class="product-desc">{{ product.description|truncatewords:15 }}</p>
         <div class="product-price">{{ product.price }} ₴</div>
+
+        <!-- ⭐ Средняя оценка -->
+        <div class="rating">
+          {% with avg=product.average_rating %}
+            {% for i in "12345" %}
+              {% if forloop.counter <= avg %}
+                ★
+              {% else %}
+                <span class="empty">★</span>
+              {% endif %}
+            {% endfor %}
+            <small>{{ avg|floatformat:1 }} из 5 ({{ product.review_count }} отзыв{{ product.review_count|pluralize:",а,ов" }})</small>
+          {% endwith %}
+        </div>
+
         <a href="{% url 'add_to_cart' product.slug %}" class="btn">Добавить в корзину</a>
       </div>
     </div>

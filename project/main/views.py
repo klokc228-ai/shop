@@ -61,6 +61,13 @@ def about(request):
 def shop(request):
     products = Product.objects.all().order_by('-created_at')
 
+    for product in products:
+        product.average_rating = (
+            Rewiew.objects.filter(product=product, is_site_review=False)
+            .aggregate(Avg('rating'))['rating__avg'] or 0
+        )
+        product.review_count = Rewiew.objects.filter(product=product, is_site_review=False).count()
+
     if request.method == 'POST':
         form = ProductForm(request.POST, request.FILES)
         if form.is_valid():
@@ -68,8 +75,11 @@ def shop(request):
             return redirect('shop')
     else:
         form = ProductForm()
-    return render(request, 'main/shop.html', {'form': form, 'products': products})
 
+    return render(request, 'main/shop.html', {
+        'form': form,
+        'products': products
+    })
 
 def product_detail(request, slug):
     product = get_object_or_404(Product, slug=slug)

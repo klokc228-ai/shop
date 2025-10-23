@@ -22,6 +22,7 @@ class Rewiew(models.Model):
         verbose_name='Оценка'
     )
     created_at = models.DateTimeField(auto_now_add=True, verbose_name='Дата создания')
+    is_site_review = models.BooleanField(default=False)
 
     def __str__(self):
         return f"{self.name} — {self.title}"

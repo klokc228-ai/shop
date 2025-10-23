@@ -6,6 +6,7 @@ from django.http import JsonResponse
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import login, logout
 from django.contrib.auth.models import User
+from django.db.models import Avg, Count
 
 
 def logout_view(request):
@@ -72,7 +73,46 @@ def shop(request):
 
 def product_detail(request, slug):
     product = get_object_or_404(Product, slug=slug)
-    return render(request, 'main/product_detail.html', {'product': product})
+
+
+    if request.method == 'POST':
+        form = RewiewForm(request.POST)
+        if form.is_valid():
+            review = form.save(commit=False)
+            review.product = product  
+            review.save()
+            return redirect('product_detail', slug=slug)
+    else:
+        form = RewiewForm()
+
+
+    reviews_qs = Rewiew.objects.filter(product=product).order_by('-created_at')
+
+  
+    stats = reviews_qs.aggregate(
+        average_rating=Avg('rating'),
+        review_count=Count('id')
+    )
+
+    average_rating = stats['average_rating'] or 0
+    review_count = stats['review_count'] or 0
+    rounded_avg = int(average_rating)  
+    has_half_star = average_rating % 1 >= 0.5 
+    empty_stars = 5 - rounded_avg - (1 if has_half_star else 0)
+
+    context = {
+        'product': product,
+        'reviews': reviews_qs,
+        'average_rating': average_rating,
+        'review_count': review_count,
+        'rounded_avg': rounded_avg,
+        'empty_stars': empty_stars,
+        'has_half_star': has_half_star,
+        'form': form,
+    }
+
+    return render(request, 'main/product_detail.html', context)
+
 
 
 def cart_view(request):

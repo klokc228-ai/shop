@@ -5,6 +5,7 @@
 
 {% block extra_head %}
 <style>
+/* ===== Кнопка "Добавить в корзину" ===== */
 .btn-add {
   display: inline-block;
   margin-top: 16px;
@@ -20,74 +21,248 @@
   opacity: 0.85;
   transform: translateY(-2px);
 }
-</style>
 
+/* ===== Карточка товара ===== */
+.product-page {
+  max-width: 1000px;
+  margin: 60px auto;
+  padding: 0 20px;
+  display: flex;
+  gap: 40px;
+  align-items: flex-start;
+}
+.product-page img {
+  width: 420px;
+  border-radius: 16px;
+  box-shadow: 0 8px 24px rgba(0,0,0,.4);
+}
+.info {
+  flex: 1;
+}
+.info h1 {
+  font-size: 32px;
+  margin-bottom: 10px;
+  background: var(--accent);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+.price {
+  font-size: 26px;
+  font-weight: 700;
+  margin: 20px 0;
+}
+.desc {
+  color: var(--muted);
+  line-height: 1.6;
+}
 
-<style>
+/* ===== Средняя оценка ===== */
+.rating-summary {
+  max-width: 900px;
+  margin: 80px auto 40px;
+  text-align: center;
+  background: rgba(18, 21, 30, 0.8);
+  border: 1px solid rgba(120, 130, 160, 0.2);
+  border-radius: 16px;
+  padding: 25px;
+  box-shadow: 0 0 20px rgba(43, 210, 255, 0.15);
+  backdrop-filter: blur(10px);
+}
+.rating-summary h2 {
+  background: linear-gradient(90deg, #2bd2ff, #8a7dff);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  font-size: 26px;
+  margin-bottom: 10px;
+}
+.rating-summary p {
+  color: #b9bed0;
+  font-size: 15px;
+  margin-top: 8px;
+}
+
+/* ===== Секция отзывов ===== */
+.reviews-section {
+  max-width: 900px;
+  margin: 40px auto;
+  padding: 0 20px;
+}
+.reviews-section h2 {
+  text-align: center;
+  font-size: 28px;
+  margin-bottom: 30px;
+  background: linear-gradient(90deg, #2bd2ff, #8a7dff);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+.review {
+  background: rgba(18, 21, 30, 0.85);
+  border: 1px solid rgba(120, 130, 160, 0.2);
+  border-radius: 16px;
+  padding: 18px 22px;
+  margin-bottom: 20px;
+  box-shadow: 0 0 15px rgba(43, 210, 255, 0.1);
+  backdrop-filter: blur(10px);
+}
+.review-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+.review-name {
+  font-weight: 600;
+  color: #fff;
+}
+.review-rating {
+  color: #ffd700;
+}
+.review-text {
+  color: #c3c8d5;
+  line-height: 1.5;
+}
+
+/* ===== Форма добавления отзыва ===== */
+.add-review {
+  max-width: 900px;
+  margin: 40px auto 100px;
+  background: rgba(18, 21, 30, 0.8);
+  border-radius: 16px;
+  padding: 30px;
+  box-shadow: 0 0 20px rgba(43, 210, 255, 0.15);
+  border: 1px solid rgba(120, 130, 160, 0.2);
+  backdrop-filter: blur(10px);
+}
+.add-review h3 {
+  text-align: center;
+  background: linear-gradient(90deg, #2bd2ff, #8a7dff);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  margin-bottom: 20px;
+}
+.add-review label {
+  display: block;
+  margin: 10px 0 6px;
+  color: #c3c8d5;
+}
+.add-review input,
+.add-review textarea {
+  width: 100%;
+  background: #0f1118;
+  border: 1px solid rgba(100, 110, 140, 0.3);
+  border-radius: 10px;
+  padding: 10px 12px;
+  color: #fff;
+  font-size: 15px;
+  transition: border 0.3s ease;
+}
+.add-review input:focus,
+.add-review textarea:focus {
+  border-color: #2bd2ff;
+  outline: none;
+}
+.add-review button {
+  margin-top: 16px;
+  width: 100%;
+  padding: 12px;
+  border-radius: 12px;
+  border: none;
+  background: linear-gradient(90deg, #2bd2ff, #8a7dff);
+  color: #fff;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+.add-review button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 0 25px rgba(138, 125, 255, 0.5);
+}
+
+/* ===== Адаптив ===== */
+@media (max-width: 768px) {
   .product-page {
-    max-width: 1000px;
-    margin: 60px auto;
-    padding: 0 20px;
-    display: flex;
-    gap: 40px;
-    align-items: flex-start;
+    flex-direction: column;
+    align-items: center;
   }
-
   .product-page img {
-    width: 420px;
-    border-radius: 16px;
-    box-shadow: 0 8px 24px rgba(0,0,0,.4);
+    width: 100%;
+    max-width: 360px;
   }
+}
 
-  .info {
-    flex: 1;
-  }
+/* ===== Звёзды с половинкой и сиянием ===== */
+.rating-stars {
+  margin: 8px 0;
+}
+.star {
+  display: inline-block;
+  position: relative;
+  width: 34px;
+  height: 34px;
+  margin: 0 2px;
+  font-size: 34px;
+}
+.star::before {
+  content: "★";
+  position: absolute;
+  top: 0;
+  left: 0;
+  color: #ffd700;
+  text-shadow: 0 0 15px rgba(255,215,0,0.7);
+}
+.star.empty::before {
+  opacity: 0.2;
+  filter: blur(0);
+  text-shadow: none;
+}
+.star.half::before {
+  color: #ffd700;
+  background: linear-gradient(90deg, #ffd700 50%, rgba(255,255,255,0.15) 50%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: glowHalf 3s ease-in-out infinite alternate;
+}
+.star.full::before {
+  animation: glowFull 3s ease-in-out infinite alternate;
+}
+@keyframes glowFull {
+  0% { text-shadow: 0 0 10px rgba(255,215,0,0.6); transform: scale(1); }
+  50% { text-shadow: 0 0 25px rgba(255,255,180,1); transform: scale(1.1); }
+  100% { text-shadow: 0 0 10px rgba(255,215,0,0.6); transform: scale(1); }
+}
+@keyframes glowHalf {
+  0% { text-shadow: 0 0 5px rgba(255,215,0,0.4); }
+  100% { text-shadow: 0 0 20px rgba(255,255,180,0.9); }
+}
 
-  .info h1 {
-    font-size: 32px;
-    margin-bottom: 10px;
-    background: var(--accent);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-  }
-
-  .price {
-    font-size: 26px;
-    font-weight: 700;
-    margin: 20px 0;
-  }
-
-  .desc {
-    color: var(--muted);
-    line-height: 1.6;
-  }
-
-  .btn {
-    padding: 12px 18px;
-    border-radius: 12px;
-    border: none;
-    background: var(--accent);
-    color: #0c0f14;
-    font-weight: 700;
-    cursor: pointer;
-    transition: opacity .3s;
-  }
-
-  .btn:hover {
-    opacity: 0.85;
-  }
-
-  @media (max-width: 768px) {
-    .product-page {
-      flex-direction: column;
-      align-items: center;
-    }
-
-    .product-page img {
-      width: 100%;
-      max-width: 360px;
-    }
-  }
+/* ===== Звёзды в форме отзыва (кликабельные) ===== */
+.rating {
+  direction: rtl;
+  display: inline-flex;
+  justify-content: center;
+  gap: 5px;
+  font-size: 34px;
+  margin: 8px 0 20px;
+}
+.rating input {
+  display: none;
+}
+.rating label {
+  color: #444;
+  cursor: pointer;
+  transition: transform 0.2s ease, color 0.3s ease;
+  text-shadow: 0 0 4px rgba(0,0,0,0.3);
+}
+.rating label:hover,
+.rating label:hover ~ label {
+  color: #2bd2ff;
+  transform: scale(1.2);
+}
+.rating input:checked ~ label {
+  color: #ffd700;
+  text-shadow: 0 0 15px rgba(255,215,0,0.7);
+  transform: scale(1.15);
+}
 </style>
 {% endblock %}
 
@@ -98,9 +273,75 @@
     <h1>{{ product.name }}</h1>
     <div class="price">{{ product.price }} ₴</div>
     <p class="desc">{{ product.description }}</p>
-    <a href="{% url 'add_to_cart' product.slug %}" class="btn-add">
-      Добавить в корзину
-    </a>
+    <a href="{% url 'add_to_cart' product.slug %}" class="btn-add">Добавить в корзину</a>
   </div>
+</div>
+
+<!-- ⭐ Средняя оценка -->
+<div class="rating-summary">
+  <h2>Средняя оценка покупателей</h2>
+  <div class="rating-stars">
+    {% for i in "12345" %}
+      {% if forloop.counter <= rounded_avg %}
+        <span class="star full"></span>
+      {% elif has_half_star and forloop.counter == rounded_avg|add:1 %}
+        <span class="star half"></span>
+      {% else %}
+        <span class="star empty"></span>
+      {% endif %}
+    {% endfor %}
+  </div>
+  <p>{{ average_rating|floatformat:1 }} из 5 на основе {{ review_count }} отзывов</p>
+</div>
+
+<!-- 💬 Отзывы -->
+<section class="reviews-section">
+  <h2>Отзывы клиентов</h2>
+  {% for review in reviews %}
+  <div class="review">
+    <div class="review-header">
+      <span class="review-name">{{ review.name }}</span>
+      <span class="review-rating">
+        {% for i in "12345" %}
+          {% if forloop.counter <= review.rating %}
+            ⭐
+          {% else %}
+            <span style="opacity:.25;">⭐</span>
+          {% endif %}
+        {% endfor %}
+      </span>
+    </div>
+    <p class="review-text">{{ review.about }}</p>
+  </div>
+  {% empty %}
+  <p style="text-align:center;color:#999;">Пока нет отзывов. Будь первым!</p>
+  {% endfor %}
+</section>
+
+<!-- 📝 Форма -->
+<div class="add-review">
+  <h3>Оставить отзыв</h3>
+  <form method="post" action="">
+    {% csrf_token %}
+    <label for="id_name">Ваше имя</label>
+    <input type="text" name="name" id="id_name" required>
+
+    <label for="id_title">Заголовок</label>
+    <input type="text" name="title" id="id_title" required>
+
+    <label>Оценка</label>
+    <div class="rating">
+      <input type="radio" name="rating" id="star5" value="5"><label for="star5">★</label>
+      <input type="radio" name="rating" id="star4" value="4"><label for="star4">★</label>
+      <input type="radio" name="rating" id="star3" value="3"><label for="star3">★</label>
+      <input type="radio" name="rating" id="star2" value="2"><label for="star2">★</label>
+      <input type="radio" name="rating" id="star1" value="1"><label for="star1">★</label>
+    </div>
+
+    <label for="id_about">Отзыв</label>
+    <textarea name="about" id="id_about" rows="4" required></textarea>
+
+    <button type="submit">Отправить отзыв</button>
+  </form>
 </div>
 {% endblock %}
